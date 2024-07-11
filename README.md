@@ -15,7 +15,7 @@ MONAI Label is a software tool for using machine learning to automate the image 
 ```
 ssh <your_pod_username>@<your_pod_ip>
 ```
-You can find <your_pod_username>@<your_pod_ip> under the "Connect" tab in your pod. This will like you to a section of code you can copy and run in your terminal.
+You can find <your_pod_username>@<your_pod_ip> under the "Connect" tab in your pod. This will take you to a section of code you can copy and run in your terminal.
 ## Set up MONAI Label Server
 [This tutorial](https://www.youtube.com/watch?v=8y1OBQs2wis&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=1) reviews several methods for installing MONAI Label on a local machine. 
 1. Within RunPod instance, create and activate a python virtual environment. This helps prevent issues with software dependencies when installing MONAI Label.
