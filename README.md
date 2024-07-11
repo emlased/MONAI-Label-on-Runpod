@@ -42,7 +42,7 @@ Here is the general format for the command to start a server.
 monailabel start_server --app ChooseApp --studies dataset --conf model ChooseModel
 ```
 
-To use the DeepEdit model from the Radiology app, run the following. If you will be uploading dicom files directly to 3DSlicer you can leave the location for the studies command as "dataset". 
+To use the DeepEdit model from the Radiology app, run the following. If you will be uploading dicom files directly though 3DSlicer you can leave the location for the studies command as "dataset". 
 
 ```
 monailabel start_server --app radiology --studies dataset --conf models deepedit
