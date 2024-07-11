@@ -60,7 +60,7 @@ The radiology app also supports DeepGrow and Segmentation models. The monai bund
 monailabel start_server --app monaibundle --studies dataset --conf models lung_nodule_ct_detection
 ```
 
-## Set Up 3D Slicer
+## Set up 3D Slicer
 1. Install and run 3D Slicer. Install the MONAI Label plugin for 3D Slicer. [This tutorial](https://www.youtube.com/watch?v=KjwuFx0pTXU&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=2) shows how to complete the installation and provides an overview of the MONAI Label plugin.
 3. To use 3D Slicer with MONAI Label, you first need to connect your local machine to the MONAI Label server running on the RunPod instance. To do this go to the Connect button on the RunPod and select "Connect to HTTP Service [Port 8000]". This will open the MONAI Label App in a web browser.
 4. Hit the Refresh button on 3D Slicer to connect to the MONAI Label Server.
