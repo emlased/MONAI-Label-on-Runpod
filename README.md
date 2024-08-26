@@ -1,7 +1,6 @@
 # MONAI Label
 ## Background and definitions
-MONAI Label is a software tool for using machine learning to automate the image segmentation process. It is run on a server and the user interacts with the server using a client. 3D Slicer is a client that is run on the user's local machine. OHIF is an alternate client that is run on the MONAI Label server and accessed through the user's browser. Runpod is a service that allows you to build a temporary server called a pod with a high end gpu for performing machine learning computations. Orthanc is a software that is used to create a dicom server that stores data for imaging studies. MONAI Label will communicate with an Orthanc dicom server to pull studies and push segmentation files. This tutorial describes how to build a MONAI Label server on a runpod. 
-
+MONAI Label is a software tool for using machine learning to automate the image segmentation process. It is run on a server and the user interacts with the server using a client. 3D Slicer is a client that is run on the user's local machine. OHIF is an alternate client that is run on the MONAI Label server and accessed through the user's browser. RunPod is a service that allows you to build a temporary server called a pod with a high end gpu for performing machine learning computations. Orthanc is a software that is used to create a dicom server that stores data for imaging studies. MONAI Label will communicate with an Orthanc dicom server to pull studies and push segmentation files. This tutorial describes how to build a MONAI Label server on a RunPod. 
 ## Step by step
 1. Set up RunPod
 2. Set up MONAI Label Server
@@ -11,11 +10,27 @@ MONAI Label is a software tool for using machine learning to automate the image 
 1. Create a RunPod account: Sign up and log in to [RunPod](https://www.runpod.io/). You will need to request access to the UT Academic AI Team account and will receive a url to link this to your account.
 2. Next, you can configure a pod for deployment. Click **Pods** in the toolbar and then **+ Deploy**. Next you will configure the pod. Select the cloud type **Secure Cloud** and change to **Community Cloud**. Then select the location **Any** and change to **US - United States**. Then change the internet speed from **Med** to **High** or **Extreme**. Checl the box for **Public IP**. Finally you will select a GPU. It should have at least 12GB VRAM. The **RTX 4090** is a good option. Remember to stop the machine when not in use because the account will be charged by the hour.
 3. When you scroll down, you will see a button **Edit Template**. A recommended starting point is 10GB for the **Container Disk** and 50GB for the **Volume Disk**. You can increase the volume disk later but once increased it cannot be decreased without restarting from scratch. The container disk is temporary disk space that is deleted any time the pod is stopped and restarted. The volume disk is permanent and stored in the /workspace directory. 
-4. While on the **Edit Template** section, you want to expose port 8000 so that the pod can communicate with your computer. You can do this under **Expose TCP Ports** by replacing the text with 8000. You can delete the **Expose HTTP Ports** text or leave the port 8888 exposed.
+4. While on the **Edit Template** section, you want to expose port 8000 so that the pod can communicate with your computer. You can do this under **Expose TCP Ports** by replacing the text with 8000. You can delete the text under **Expose HTTP Ports** or leave the port 8888 exposed.
 5. Click **Deploy On-Demand** to start the pod.
-6. Under your RunPod, click the down arrow to expand. Click the **Connect** button. Then click the **Start Web Terminal** button and **Connect to Web Terminal**. 
-
+6. Under your RunPod, click the down arrow to expand. Click the **Connect** button. Then click the **Start Web Terminal** button and **Connect to Web Terminal**. Alternatively the SSH link provided by runpod can be used to access RunPod through a terminal on a users local computer. This will require you to generate an SSH key and upload through the RunPod Settings. 
 ## 2. Set up MONAI Label Server
+The following text text can be run in the RunPod terminal
+```
+#create and activate python virtual environment in permanent workspace directory
+cd /workspace &&
+python -m venv venv &&
+source /workspace/venv/bin/activate &&
+
+#install monailabel and radiology app inside environment
+cd /workspace/venv &&
+pip install monailabel &&
+monailabel apps --name radiology --download --output . &&
+
+#create script start_server.sh
+cd /workspace &&
+echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d --conf use_pretrained_model false" > start_server.sh
+```
+
 
 pip install monailabel
 monailabel apps
