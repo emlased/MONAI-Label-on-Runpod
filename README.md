@@ -14,7 +14,7 @@ MONAI Label is a software tool for using machine learning to automate the image 
 5. Click **Deploy On-Demand** to start the pod.
 6. Under your RunPod, click the down arrow to expand. Click the **Connect** button. Then click the **Start Web Terminal** button and **Connect to Web Terminal**. Alternatively the SSH link provided by runpod can be used to access RunPod through a terminal on a users local computer. This will require you to generate an SSH key and upload through the RunPod Settings. 
 ## 2. Set up MONAI Label Server
-The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this text once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named start_server.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
+The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this code once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named start_server.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
 ```
 #create and activate python virtual environment in permanent workspace directory
 cd /workspace &&
@@ -34,9 +34,12 @@ To start the server, run the following code
 ```
 bash /workspace/start_server.sh
 ```
-
-
-
+This section of the code is imortant because it defines the script to start the server and contains the server configuration settings.
+```
+echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d --conf use_pretrained_model false" > start_server.sh
+```
+The Orthanc DICOM server is located at **http://20.55.49.33/dicom-web**. If there are imaging studies saved to the RunPod you can change this to a local directory like **/workspace/venv/studies**. If there are no accessible studies, you can add studies to be annotated using 3D Slicer.
+Another important setting is the models
 
 
 monailabel start_server --app ChooseApp --studies dataset --conf model ChooseModel
