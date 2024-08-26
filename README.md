@@ -1,33 +1,22 @@
-# Using MONAI Label with 3D Slicer
-## Notes
-MONAI Label is a software tool for using machine learning to automate the image segmentation process. It is run on a server and the user interacts with the server using a client. The client we will use is a program called 3D Slicer. 3D Slicer allows the user to visualize studies and perform segmentation tasks. Imaging data can either be stored locally and uploaded to the MONAI Label server using 3D Slicer or the MONAI Label server can pull data from a DICOM web server. In this guide, we set up a virtual MONAI Label server using the RunPod service and access the server from 3D Slicer installed on a local machine.
+# MONAI Label
+## Background and definitions
+MONAI Label is a software tool for using machine learning to automate the image segmentation process. It is run on a server and the user interacts with the server using a client. 3D Slicer is a client that is run on the user's local machine. OHIF is an alternate client that is run on the MONAI Label server and accessed through the user's browser. Runpod is a service that allows you to build a temporary server called a pod with a high end gpu for performing machine learning computations. Orthanc is a software that is used to create a dicom server that stores data for imaging studies. MONAI Label will communicate with an Orthanc dicom server to pull studies and push segmentation files. This tutorial describes how to build a MONAI Label server on a runpod. 
+
 ## Step by step
 1. Set up RunPod
 2. Set up MONAI Label Server
 3. Set up 3D Slicer
 4. Active Learning with MONAI Label
-## Set up RunPod
-1. Create a RunPod account: Sign up and log in to [RunPod](https://www.runpod.io/).
-2. Create an SSH key on your local computer and add this to RunPod. [This tutorial](https://sftptogo.com/blog/how-to-create-ssh-keys-on-windows-10/?gad_source=2&gclid=EAIaIQobChMIypyRk8efhwMVVyvUAR2lyAuDEAAYASAAEgJhG_D_BwE) explains how to create a key in windows 10. In RunPod, navigate to Settings -> SSH Public Keys and paste the SSH key.
-3. Deploy a pod. Make sure that you have SSH terminal access checked. Under **Edit Template**, change **Expose HTTP Ports** from _8888,_ to _8888,8000_. This allows you to connect to the server with 3D Slicer. You may need to increase your pod storage capacity depending on the size of the data set you are annotating. Changing this later will reset the pod.
-4. In a local terminal, login to RunPod using ssh
+## 1. Set up RunPod
+1. Create a RunPod account: Sign up and log in to [RunPod](https://www.runpod.io/). You will need to request access to the UT Academic AI Team account and will receive a url to link this to your account.
+2. Next, you can configure a pod for deployment. Click **Pods** in the toolbar and then **+ Deploy**. Next you will configure the pod. Select the cloud type **Secure Cloud** and change to **Community Cloud**. Then select the location **Any** and change to **US - United States**. Then change the internet speed from **Med** to **High** or **Extreme**. Checl the box for **Public IP**. Finally you will select a GPU. It should have at least 12GB VRAM. The **RTX 4090** is a good option. Remember to stop the machine when not in use because the account will be charged by the hour.
+3. When you scroll down, you will see a button **Edit Template**. A recommended starting point is 10GB for the **Container Disk** and 50GB for the **Volume Disk**. You can increase the volume disk later but once increased it cannot be decreased without restarting from scratch. The container disk is temporary disk space that is deleted any time the pod is stopped and restarted. The volume disk is permanent and stored in the /workspace directory. 
+4. While on the **Edit Template** section, you want to expose port 8000 so that the pod can communicate with your computer. You can do this under **Expose TCP Ports** by replacing the text with 8000. You can delete the **Expose HTTP Ports** text or leave the port 8888 exposed.
+5. Click **Deploy On-Demand** to start the pod.
+6. Under your RunPod, click the down arrow to expand. Click the **Connect** button. Then click the **Start Web Terminal** button and **Connect to Web Terminal**. 
 
-```
-ssh <your_pod_username>@<your_pod_ip>
-```
-You can find <your_pod_username>@<your_pod_ip> under the **Connect** tab in your pod. This will take you to a section of code you can copy and run in your terminal.
-## Set up MONAI Label Server
-[This tutorial](https://www.youtube.com/watch?v=8y1OBQs2wis&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=1) reviews several methods for installing MONAI Label on a local machine. 
-1. Within RunPod instance, create and activate a python virtual environment. This helps prevent issues with software dependencies when installing MONAI Label.
+## 2. Set up MONAI Label Server
 
-```
-python3 -m venv venv
-source venv/bin/activate
-```
-
-2. Install monailabel. Install radiology app and monaibundle app.
-
-```
 pip install monailabel
 monailabel apps
 monailabel apps --download --name radiology --output apps
