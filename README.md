@@ -40,10 +40,12 @@ The script start_server.sh can be modified when you run the code to initialize t
 Before you can connect to the MONAI Label server using your client (3D Slicer or OHIF), you need to know the url for the API. In step 6 of the RunPod setup, you click the **Connect** button. If you click the **TCP Port Mappings** button this will give you the url. You will use **http://** + **Public IP** + **: (colon)** + **External (port)**. An example is **http://38.80.153.61:31333**. This url will not be active until you run the code to start the MONAI Label server. Then your RunPod will connect to its internal port 8000 and send data to the url at http://38.80.153.61:31333. If you paste this url into your browser after starting the server, you will see the MONAI Label API page. 
 ## 4. Set up 3D Slicer
 1. Install and run 3D Slicer. Install the MONAI Label plugin for 3D Slicer. [This tutorial](https://www.youtube.com/watch?v=KjwuFx0pTXU&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=2) shows how to complete the installation and provides an overview of the MONAI Label plugin.
-3. To use 3D Slicer with MONAI Label, you first need to connect your local machine to the MONAI Label server running on the RunPod instance. To do this go to the **Connect** button on the RunPod and select **Connect to HTTP Service [Port 8000]**. This will open the MONAI Label App in a web browser.
-4. Hit the **Refresh** button on 3D Slicer to connect to the MONAI Label Server.
+3. .....
 5. To load a study, hit the **Next Sample** button.
 ## Active Learning with MONAI Label
+
+......
+
 This guide will use active learning to fine-tune the [DeepEdit model](https://arxiv.org/pdf/2305.10655). 
 1. You want to begin by using the Segment Editor tab to define labels for each segment you want to create. 
 2. Now you either use a pretrained model (like the lung_nodule_ct_detection model) to auto segment the study or you manually create a segmentation mask. Here we will start by manually creating a mask and use the DeepEdit model to refinethe mask. This can be done using a paintbrush or basic tools built in to 3D Slicer; however MONAI Label provides the scribbles machine learning algorithm to speed this up. [This tutorial](https://www.youtube.com/watch?v=Wxmo7MVc7hI&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=4) shows how to use scribbles algorithm. First you select the region of interest in each anatomic plane. Then you draw lines or "scribble" on the object of interest (foreground) and around the object (background). At any point you can use the **Show 3D** button to see a volumetric rendering of the annotation but this feature should be used sparingly as it slows down 3D Slicer. You can continue adding scribbles and hitting the **Update** button to improve segmentation. After you finish annotating a study, hit the **Submit Label** button to submit the segmentation to the server.
