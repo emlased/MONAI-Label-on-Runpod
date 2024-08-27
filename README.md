@@ -45,14 +45,17 @@ bash /workspace/start_server.sh
 3. When the server is up an running you should see this at the end of the page.
 ![Image 7](images/tutorial_7.png)
 ## 3. Server Configuration Options
-The script start_server.sh can be modified when you run the code to initialize the server. The echo command is used to write the script. 
-The argument **--studies** is used to define to location of our imaging studies. **http://20.55.49.33/dicom-web** is the location of an Orthanc web server. 
-The argument **--conf models** lets you define what models MONAI Label will import for data segmentation. Currently it is set to **deepgrow_2d,deepgrow_3d** which will allow you to use the [deepgrow model](https://github.com/Project-MONAI/MONAILabel/tree/main/sample-apps/radiology#deepgrow). Other models included in the radiology application include deepedit and segmentation. 
+Here is the code used in the start_server.sh script to run the MONAI Label server.
+```
+monailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d --conf use_pretrained_model false
+```
+Notice that after the start_server command there are multiple configuration variables including **--app**, **--studies**, and **--conf models**. These values can be modified to change how the server functions. **--app** defines what MONAI Label application will be used. This tutorial uses the radiology application, but MONAI Label has additional models available in the pathology and MONAI Bundle applications. **studies** defines the location of the imaging data.  
+Here is the code used to  script start_server.sh can be modified when you run the code to initialize the server. The included url points to a DICOM server but you can also point to a directory on RunPod local to the MONAI Label server. **--conf** lets you specify what models to upload or specific model parameters. The following tables list the key parameters used when starting the server and their arguments as well as the models available for use in the radiology application. [This](https://github.com/Project-MONAI/MONAILabel/tree/main/sample-apps/radiology) is a good resource for viewing the available settings for each model.
 | Config | Value | Description |
 |--------|-------|-------------|
 | --app | path/to/radiology | location of radiology app directory on server |
 | --studies | path/to/studies | location of studies on server or url for DICOM server |
-| --conf models | model_name | imports listed models separated by commas |
+| --conf models | model_name1,model_name2 | imports listed models separated by commas |
 
 | Model | Description |
 |-------|-------------|
