@@ -57,7 +57,7 @@ Here is the code used to  script start_server.sh can be modified when you run th
 | --studies | path/to/studies | location of studies on server or url for DICOM server |
 | --conf models | model_name1,model_name2 | imports listed models separated by commas |
 
-| Model | Description |
+| Models | Description |
 |-------|-------------|
 | deepedit | imports DeepEdit interactive/automated model |
 | deepgrow_2d,deepgrow_3d | imports DeepGrow interacive segmentation model |
