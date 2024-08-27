@@ -4,8 +4,9 @@ MONAI Label is a software tool for using machine learning to automate the image 
 ## Step by step
 1. Set up RunPod
 2. Set up MONAI Label Server
-3. Set up 3D Slicer
-4. Active Learning with MONAI Label
+3. Accessing the MONAI Label API
+4. Set up 3D Slicer
+6. Active Learning with MONAI Label
 ## 1. Set up RunPod
 1. Create a RunPod account: Sign up and log in to [RunPod](https://www.runpod.io/). You will need to request access to the UT Academic AI Team account and will receive a url to link this to your account.
 2. Next, you can configure a pod for deployment. Click **Pods** in the toolbar and then **+ Deploy**. Next you will configure the pod. Select the cloud type **Secure Cloud** and change to **Community Cloud**. Then select the location **Any** and change to **US - United States**. Then change the internet speed from **Med** to **High** or **Extreme**. Checl the box for **Public IP**. Finally you will select a GPU. It should have at least 12GB VRAM. The **RTX 4090** is a good option. Remember to stop the machine when not in use because the account will be charged by the hour.
@@ -14,7 +15,7 @@ MONAI Label is a software tool for using machine learning to automate the image 
 5. Click **Deploy On-Demand** to start the pod.
 6. Under your RunPod, click the down arrow to expand. Click the **Connect** button. Then click the **Start Web Terminal** button and **Connect to Web Terminal**. Alternatively the SSH link provided by runpod can be used to access RunPod through a terminal on a users local computer. This will require you to generate an SSH key and upload through the RunPod Settings. 
 ## 2. Set up MONAI Label Server
-The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this code once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named start_server.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
+The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this text once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named start_server.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
 ```
 #create and activate python virtual environment in permanent workspace directory
 cd /workspace &&
@@ -30,45 +31,21 @@ monailabel apps --name radiology --download --output . &&
 cd /workspace &&
 echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d --conf use_pretrained_model false" > start_server.sh
 ```
-To start the server, run the following code
+Use the following code to run the script start_server.sh.
 ```
 bash /workspace/start_server.sh
 ```
-This section of the code is imortant because it defines the script to start the server and contains the server configuration settings.
-```
-echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d --conf use_pretrained_model false" > start_server.sh
-```
-The Orthanc DICOM server is located at **http://20.55.49.33/dicom-web**. If there are imaging studies saved to the RunPod you can change this to a local directory like **/workspace/venv/studies**. If there are no accessible studies, you can add studies to be annotated using 3D Slicer.
-Another important setting is the models
-
-
-monailabel start_server --app ChooseApp --studies dataset --conf model ChooseModel
-```
-
-To use the DeepEdit model from the Radiology app, run the following. If you will be uploading dicom files directly though 3DSlicer you can leave the location for the studies command as "dataset". 
-
-```
-monailabel start_server --app radiology --studies dataset --conf models deepedit
-```
-
-If you are using a DICOMweb server then you should first login using SSH. Then you can pass the data to MONAI Label using this command.
-
-```
-monailabel start_server --app radiology --studies http://127.0.0.1:8042/dicom-web --conf models deepedit
-```
-
-The radiology app also supports DeepGrow and Segmentation models. The monai bundle app hosts its own models including the lung_nodule_ct_detection model.
-
-```
-monailabel start_server --app monaibundle --studies dataset --conf models lung_nodule_ct_detection
-```
-
-## Set up 3D Slicer
+The script start_server.sh can be modified when you run the code to initialize the server. The echo command is used to write the script. The argument **--studies** is used to define to location of our imaging studies. **http://20.55.49.33/dicom-web** is the location of an Orthanc web server. The argument **--conf models** lets you define what models MONAI Label will import for data segmentation. Currently it is set to **deepgrow_2d,deepgrow_3d** which will allow you to use the [deepgrow model](https://github.com/Project-MONAI/MONAILabel/tree/main/sample-apps/radiology#deepgrow). Other models included in the radiology application include deepedit and segmentation. 
+## 3. Accessing the MONAI Label API
+Before you can connect to the MONAI Label server using your client (3D Slicer or OHIF), you need to know the url for the API. In step 6 of the RunPod setup, you click the **Connect** button. If you click the **TCP Port Mappings** button this will give you the url. You will use **http://** + **Public IP** + **: (colon)** + **External (port)**. An example is **http://38.80.153.61:31333**. This url will not be active until you run the code to start the MONAI Label server. Then your RunPod will connect to its internal port 8000 and send data to the url at http://38.80.153.61:31333. If you paste this url into your browser after starting the server, you will see the MONAI Label API page. 
+## 4. Set up 3D Slicer
 1. Install and run 3D Slicer. Install the MONAI Label plugin for 3D Slicer. [This tutorial](https://www.youtube.com/watch?v=KjwuFx0pTXU&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=2) shows how to complete the installation and provides an overview of the MONAI Label plugin.
-3. To use 3D Slicer with MONAI Label, you first need to connect your local machine to the MONAI Label server running on the RunPod instance. To do this go to the **Connect** button on the RunPod and select **Connect to HTTP Service [Port 8000]**. This will open the MONAI Label App in a web browser.
-4. Hit the **Refresh** button on 3D Slicer to connect to the MONAI Label Server.
+3. .....
 5. To load a study, hit the **Next Sample** button.
 ## Active Learning with MONAI Label
+
+......
+
 This guide will use active learning to fine-tune the [DeepEdit model](https://arxiv.org/pdf/2305.10655). 
 1. You want to begin by using the Segment Editor tab to define labels for each segment you want to create. 
 2. Now you either use a pretrained model (like the lung_nodule_ct_detection model) to auto segment the study or you manually create a segmentation mask. Here we will start by manually creating a mask and use the DeepEdit model to refinethe mask. This can be done using a paintbrush or basic tools built in to 3D Slicer; however MONAI Label provides the scribbles machine learning algorithm to speed this up. [This tutorial](https://www.youtube.com/watch?v=Wxmo7MVc7hI&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=4) shows how to use scribbles algorithm. First you select the region of interest in each anatomic plane. Then you draw lines or "scribble" on the object of interest (foreground) and around the object (background). At any point you can use the **Show 3D** button to see a volumetric rendering of the annotation but this feature should be used sparingly as it slows down 3D Slicer. You can continue adding scribbles and hitting the **Update** button to improve segmentation. After you finish annotating a study, hit the **Submit Label** button to submit the segmentation to the server.
