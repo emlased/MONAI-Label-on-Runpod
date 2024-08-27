@@ -13,8 +13,11 @@ MONAI Label is a software tool for using machine learning to automate the image 
 ![Image 1](images/tutorial_1.png)
 3. When you scroll down, you will see a button **Edit Template**. A recommended starting point is 10GB for the **Container Disk** and 50GB for the **Volume Disk**. You can increase the volume disk later but once increased it cannot be decreased without restarting from scratch. The container disk is temporary disk space that is deleted any time the pod is stopped and restarted. The volume disk is permanent and stored in the /workspace directory. 
 4. While on the **Edit Template** section, you want to expose port 8000 so that the pod can communicate with your computer. You can do this under **Expose TCP Ports** by replacing the text with 8000. You can delete the text under **Expose HTTP Ports** or leave the port 8888 exposed.
+![Image 2](images/tutorial_2.png)
 5. Click **Deploy On-Demand** to start the pod.
 6. Under your RunPod, click the down arrow to expand. Click the **Connect** button. Then click the **Start Web Terminal** button and **Connect to Web Terminal**. Alternatively the SSH link provided by runpod can be used to access RunPod through a terminal on a users local computer. This will require you to generate an SSH key and upload through the RunPod Settings. 
+![Image 3](images/tutorial_3.png)
+![Image 4](images/tutorial_4.png)
 ## 2. Set up MONAI Label Server
 The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this text once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named start_server.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
 ```
@@ -32,6 +35,7 @@ monailabel apps --name radiology --download --output . &&
 cd /workspace &&
 echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d --conf use_pretrained_model false" > start_server.sh
 ```
+![Image 5](images/tutorial_5.png)
 Use the following code to run the script start_server.sh.
 ```
 bash /workspace/start_server.sh
