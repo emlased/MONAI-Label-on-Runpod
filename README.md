@@ -52,11 +52,15 @@ The argument **--conf models** lets you define what models MONAI Label will impo
 |--------|-------|-------------|
 | --app | path/to/radiology | location of radiology app directory on server |
 | --studies | path/to/studies | location of studies on server or url for DICOM server |
-| --conf models | deepedit | imports DeepEdit interactive/automated model |
-| --conf models | deepgrow_2d,deepgrow_3d | imports DeepGrow interacive segmentation model |
-| --conf models | segmentation | imports segmentatino automated model |
-| --conf models | segmentation_spleen | imports model for spleen segmentation |
-| --conf models | localization_spine,localization_vertebra,segmentation_vertebra | imports vertebral segmentation model |
+| --conf models | model_name | imports listed models separated by commas |
+
+| Model | Description |
+|-------|-------------|
+| deepedit | imports DeepEdit interactive/automated model |
+| deepgrow_2d,deepgrow_3d | imports DeepGrow interacive segmentation model |
+| segmentation | imports segmentatino automated model |
+| segmentation_spleen | imports model for spleen segmentation |
+| localization_spine,localization_vertebra,segmentation_vertebra | imports vertebral segmentation model |
 ## 4. Accessing the MONAI Label API
 Before you can connect to the MONAI Label server using your client (3D Slicer or OHIF), you need to know the url for the API. In step 6 of the RunPod setup, you click the **Connect** button to open up the following window. If you click the **TCP Port Mappings** button this will give you the url. You will use **http://** + **Public IP** + **: (colon)** + **External (port)**. The below example would use **http://69.145.85.93:30135**. This url will not be active until you run the code to start the MONAI Label server. Then your RunPod will connect to its internal port 8000 and send data to the url at http://69.145.85.93:30135. If you paste this url into your browser after starting the server, you will see the MONAI Label API page. 
 ![Image 6](images/tutorial_6.png)
