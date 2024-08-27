@@ -2,12 +2,14 @@
 ## Background and definitions
 MONAI Label is a software tool for using machine learning to automate the image segmentation process. It is run on a server and the user interacts with the server using a client. 3D Slicer is a client that is run on the user's local machine. OHIF is an alternate client that is run on the MONAI Label server and accessed through the user's browser. RunPod is a service that allows you to build a temporary server called a pod with a high end gpu for performing machine learning computations. Orthanc is a software that is used to create a dicom server that stores data for imaging studies. MONAI Label will communicate with an Orthanc dicom server to pull studies and push segmentation files. This tutorial describes how to build a MONAI Label server on a RunPod. 
 ## Step by step
-1. Set up RunPod
-2. Set up MONAI Label Server
-3. Accessing the MONAI Label API
-4. Set up 3D Slicer
+1. Deploying a RunPod
+2. Initializing MONAI Label Server
+3. Server Configuration Options
+4. Accessing the MONAI Label API
+5. Installing MONAI Label Plugin for 3D Slicer
 6. Active Learning with MONAI Label
-## 1. Set up RunPod
+7. Long Term Use
+## 1. Deploying a RunPod
 1. Create a RunPod account: Sign up and log in to [RunPod](https://www.runpod.io/). You will need to request access to the UT Academic AI Team account and will receive a url to link this to your account.
 2. Next, you can configure a pod for deployment. Click **Pods** in the toolbar and then **+ Deploy**. Next you will configure the pod. Select the cloud type **Secure Cloud** and change to **Community Cloud**. Then select the location **Any** and change to **US - United States**. Then change the internet speed from **Med** to **High** or **Extreme**. Checl the box for **Public IP**. Finally you will select a GPU. It should have at least 12GB VRAM. The **RTX 4090** is a good option. Remember to stop the machine when not in use because the account will be charged by the hour.
 ![Image 1](images/tutorial_1.png)
@@ -18,7 +20,7 @@ MONAI Label is a software tool for using machine learning to automate the image 
 6. Under your RunPod, click the down arrow to expand. Click the **Connect** button. Then click the **Start Web Terminal** button and **Connect to Web Terminal**. Alternatively the SSH link provided by runpod can be used to access RunPod through a terminal on a users local computer. This will require you to generate an SSH key and upload through the RunPod Settings. 
 ![Image 3](images/tutorial_3.png)
 ![Image 4](images/tutorial_4.png)
-## 2. Set up MONAI Label Server
+## 2. Initializing MONAI Label Server
 The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this text once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named start_server.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
 ```
 #create and activate python virtual environment in permanent workspace directory
@@ -42,17 +44,18 @@ bash /workspace/start_server.sh
 ```
 When the server is up an running you should see this at the end of the page.
 ![Image 7](images/tutorial_7.png)
+## 3. Server Configuration Options
 The script start_server.sh can be modified when you run the code to initialize the server. The echo command is used to write the script. The argument **--studies** is used to define to location of our imaging studies. **http://20.55.49.33/dicom-web** is the location of an Orthanc web server. The argument **--conf models** lets you define what models MONAI Label will import for data segmentation. Currently it is set to **deepgrow_2d,deepgrow_3d** which will allow you to use the [deepgrow model](https://github.com/Project-MONAI/MONAILabel/tree/main/sample-apps/radiology#deepgrow). Other models included in the radiology application include deepedit and segmentation. 
-## 3. Accessing the MONAI Label API
+## 4. Accessing the MONAI Label API
 Before you can connect to the MONAI Label server using your client (3D Slicer or OHIF), you need to know the url for the API. In step 6 of the RunPod setup, you click the **Connect** button to open up the following window. If you click the **TCP Port Mappings** button this will give you the url. You will use **http://** + **Public IP** + **: (colon)** + **External (port)**. The below example would use **http://69.145.85.93:30135**. This url will not be active until you run the code to start the MONAI Label server. Then your RunPod will connect to its internal port 8000 and send data to the url at http://69.145.85.93:30135. If you paste this url into your browser after starting the server, you will see the MONAI Label API page. 
 ![Image 6](images/tutorial_6.png)
 ![Image 8](images/tutorial_8.png)
-## 4. Set up 3D Slicer
+## 5. Installing MONAI Label Plugin for 3D Slicer
 1. Install and run 3D Slicer. Install the MONAI Label plugin for 3D Slicer. [This tutorial](https://www.youtube.com/watch?v=KjwuFx0pTXU&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=2) shows how to complete the installation and provides an overview of the MONAI Label plugin.
 3. .....
 5. To load a study, hit the **Next Sample** button.
-## Active Learning with MONAI Label
-
+## 6. Active Learning with MONAI Label
+## 7. Long Term Use
 ......
 
 This guide will use active learning to fine-tune the [DeepEdit model](https://arxiv.org/pdf/2305.10655). 
