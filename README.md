@@ -9,6 +9,7 @@ MONAI Label is a software tool for using machine learning to automate the image 
 5. Installing MONAI Label Plugin for 3D Slicer
 6. Active Learning with MONAI Label
 7. Quality Control with MONAI Label Reviewer
+8. Re-depolying a Runpod
 ## 1. Deploying a RunPod
 1. Create a RunPod account: Sign up and log in to [RunPod](https://www.runpod.io/). You will need to request access to the UT Academic AI Team account and will receive a url to link this to your account.
 2. Click **Pods** in the toolbar and then **+ Deploy**. Next you will configure the pod. Select the cloud type **Secure Cloud** and change to **Community Cloud**. Then select the location **Any** and change to **US - United States**. Then change the internet speed from **Med** to **High** or **Extreme**. Checl the box for **Public IP**. Finally you will select a GPU. It should have at least 12GB VRAM. The **RTX 4090** is a good option. Remember to stop the machine when not in use because the account will be charged by the hour.
@@ -80,3 +81,5 @@ This guide will use active learning to fine-tune the [DeepEdit model](https://ar
 4. As the model accuracy improves, you can run the fine-tuned DeepEdit model under the **Auto Segmentation** tab to automatically create a mask on a new study using your model 
 ## 7. Quality Control with MONAI Label Reviewer
 [README](https://github.com/Project-MONAI/MONAILabel/blob/364c693d267529770520982b24652fa45cb2f7d1/plugins/slicer/MONAILabelReviewer/README.md)
+## 8. Re-depolying a Runpod
+After you create the MONAI Label server on a RunPod, it will persist. Next time you need to use the server all you need to do is run the script start_server.sh using the bash command as described previously. RunPod will charge an hourly rate for GPU usage as well as a daily flat rate for storage, so be mindful of keeping many inactive RunPods on the account. 
