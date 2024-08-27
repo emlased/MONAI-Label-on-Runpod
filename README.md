@@ -48,10 +48,15 @@ bash /workspace/start_server.sh
 The script start_server.sh can be modified when you run the code to initialize the server. The echo command is used to write the script. 
 The argument **--studies** is used to define to location of our imaging studies. **http://20.55.49.33/dicom-web** is the location of an Orthanc web server. 
 The argument **--conf models** lets you define what models MONAI Label will import for data segmentation. Currently it is set to **deepgrow_2d,deepgrow_3d** which will allow you to use the [deepgrow model](https://github.com/Project-MONAI/MONAILabel/tree/main/sample-apps/radiology#deepgrow). Other models included in the radiology application include deepedit and segmentation. 
-| section 1 | section 2| section 3 |
-|----------|----------|----------|
-|stuff | more stuff | even more |
-| 1 | 2 | 3 |
+| Config | Value | Description |
+|--------|-------|-------------|
+| --app | path/to/radiology | location of radiology app directory on server |
+| --studies | path/to/studies | location of studies on server or url for DICOM server |
+| --conf models | deepedit | imports DeepEdit interactive/automated model |
+| --conf models | deepgrow_2d,deepgrow_3d | imports DeepGrow interacive segmentation model |
+| --conf models | segmentation | imports segmentatino automated model |
+| --conf models | segmentation_spleen | imports model for spleen segmentation |
+| --conf models | localization_spine,localization_vertebra,segmentation_vertebra | imports vertebral segmentation model |
 ## 4. Accessing the MONAI Label API
 Before you can connect to the MONAI Label server using your client (3D Slicer or OHIF), you need to know the url for the API. In step 6 of the RunPod setup, you click the **Connect** button to open up the following window. If you click the **TCP Port Mappings** button this will give you the url. You will use **http://** + **Public IP** + **: (colon)** + **External (port)**. The below example would use **http://69.145.85.93:30135**. This url will not be active until you run the code to start the MONAI Label server. Then your RunPod will connect to its internal port 8000 and send data to the url at http://69.145.85.93:30135. If you paste this url into your browser after starting the server, you will see the MONAI Label API page. 
 ![Image 6](images/tutorial_6.png)
