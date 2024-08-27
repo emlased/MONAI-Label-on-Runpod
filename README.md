@@ -49,6 +49,7 @@ The script start_server.sh can be modified when you run the code to initialize t
 The argument **--studies** is used to define to location of our imaging studies. **http://20.55.49.33/dicom-web** is the location of an Orthanc web server. 
 The argument **--conf models** lets you define what models MONAI Label will import for data segmentation. Currently it is set to **deepgrow_2d,deepgrow_3d** which will allow you to use the [deepgrow model](https://github.com/Project-MONAI/MONAILabel/tree/main/sample-apps/radiology#deepgrow). Other models included in the radiology application include deepedit and segmentation. 
 | section 1 | section 2| section 3 |
+|----------|----------|----------|
 |stuff | more stuff | even more |
 | 1 | 2 | 3 |
 ## 4. Accessing the MONAI Label API
