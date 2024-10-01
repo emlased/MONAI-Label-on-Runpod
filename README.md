@@ -7,7 +7,7 @@ This document will discuss a workflow for using MONAI Label with 3D Slicer to an
 4. Lung Nodule Example
 5. Troubleshooting
 6. Useful Resources
-# 1. Setting Up MONAI Label on RunPod
+# Setting Up MONAI Label on RunPod
 ## Background
 * **MONAI Label** is a software tool that uses machine learning to automate the image segmentation process. It is run on a server, and the user interacts with the server using a client. 
 * **3D Slicer** is a client that is run on the user's local machine and allows for visualization and segmentation of imaging data. 
@@ -32,7 +32,7 @@ This document will discuss a workflow for using MONAI Label with 3D Slicer to an
 ![Image 3](images/tutorial_3.png)
 ![Image 4](images/tutorial_4.png)
 ## 2. Initializing MONAI Label Server
-1. The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this text once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named start_server.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
+1. The following text text can be copied and run in the RunPod terminal. This will create a virtual environment and install MONAI Label along with its radiology application in the /workspace directory. After running this text once, the RunPod can be stopped and started without needing to complete this step again. It will also create a script named deepgrow.sh containing all the commands to run the MONAI Label server upon starting the RunPod. 
 ```
 #create and activate python virtual environment in permanent workspace directory
 cd /workspace &&
@@ -56,3 +56,16 @@ bash /workspace/deepgrow.sh
 ```
 3. When the server is up an running you should see this at the end of the page.
 ![Image 7](images/tutorial_7.png)
+## 3. Accessing the MONAI Label API
+Before you can connect to the MONAI Label server using your client (3D Slicer or OHIF), you need to know the url for the API. In step 6 of the RunPod setup, you click the **Connect** button to open up the following window. If you click the **TCP Port Mappings** button this will give you the url. You will use **http://** + **Public IP** + **: (colon)** + **External (port)**. The below example would use **http://69.145.85.93:30135**. This url will not be active until you run the code to start the MONAI Label server. Then your RunPod will connect to its internal port 8000 and send data to the url at http://69.145.85.93:30135. If you paste this url into your browser after starting the server, you will see the MONAI Label API page. 
+![Image 6](images/tutorial_6.png)
+![Image 8](images/tutorial_8.png)
+## 4. Installing MONAI Label Plugin for 3D Slicer
+1. Install and run [3D Slicer](https://download.slicer.org/).
+2. Install the MONAI Label plugin for 3D Slicer. [This tutorial](https://www.youtube.com/watch?v=KjwuFx0pTXU&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=2) shows how to complete the installation and provides an overview of the MONAI Label plugin.
+3. Navigate to the MONAI Label plugin and paste the API url from step 4 into the box titled **MONAI Label Server**. Click the refresh button. This should load the model specified by your start_server command.
+4. To load a study from the DICOM server, hit the **Next Sample** button. Alternatively, you can load samples to your MONAI Label server directly through the DICOM module in 3D Slicer.
+## 5. Re-depolying a Runpod
+After you create the MONAI Label server on a RunPod, it will persist. Next time you need to use the server all you need to do is run the script start_server.sh using the bash command as described previously. RunPod will charge an hourly rate for GPU usage as well as a daily flat rate for storage, so be mindful of keeping many inactive RunPods on the account.
+# Labeling Strategies
+Now
