@@ -45,7 +45,7 @@ pip install monailabel &&
 monailabel apps --name radiology --download --output . &&
 monailabel apps --name monaibundle --download --output . &&
 
-#create script start_server.sh
+#create script deepgrow.sh
 cd /workspace &&
 echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d" > deepgrow.sh
 ```
@@ -63,9 +63,16 @@ Before you can connect to the MONAI Label server using your client (3D Slicer or
 ## 4. Installing MONAI Label Plugin for 3D Slicer
 1. Install and run [3D Slicer](https://download.slicer.org/).
 2. Install the MONAI Label plugin for 3D Slicer. [This tutorial](https://www.youtube.com/watch?v=KjwuFx0pTXU&list=PLtoSVSQ2XzyD4lc-lAacFBzOdv5Ou-9IA&index=2) shows how to complete the installation and provides an overview of the MONAI Label plugin.
-3. Navigate to the MONAI Label plugin and paste the API url from step 4 into the box titled **MONAI Label Server**. Click the refresh button. This should load the model specified by your start_server command.
+3. Navigate to the MONAI Label plugin and paste the API url from step 4 into the box titled **MONAI Label Server**. Click the refresh button. This should load the model specified by your deepgrow.sh script.
 4. To load a study from the DICOM server, hit the **Next Sample** button. Alternatively, you can load samples to your MONAI Label server directly through the DICOM module in 3D Slicer.
 ## 5. Re-depolying a Runpod
 After you create the MONAI Label server on a RunPod, it will persist. Next time you need to use the server all you need to do is run the script deepgrow.sh using the bash command as described previously. RunPod will charge an hourly rate for GPU usage as well as a daily flat rate for storage, so be mindful of keeping many inactive RunPods on the account.
 # Labeling Strategies
-Now
+There are 2 strategies for labeling data. Slicer has a library of labeling tools built in that use simple algorithms for efficient labeling. The MONAI Label plugin adds capabilities for several deep learning tools that can be fine tuned to improve labeling efficiency. 
+## Labeling in Slicer
+The Slicer segmentation toolbar has a number of built in segmentation methods but 2 that are especially useful are threshold and smoothing. The thresholding tool will select tissues within a specified hounsfield unit window. Especially useful is the threshold masking feature where the user can create a sphere shaped paintbrush where only tissues selected by the threshold tool will be marked. This tool is useful for correcting an automated segmentation that missed part of the object of interest. 
+<images>
+After using the thresholding tool, the output can have an irregular border so the smoothing tool can help create a cleaner output. 
+<images>
+## Labeling with MONAI LAbel
+The MONAI Label platform allows for the use of several powerful deep learning tools. These tools are either fully automated or interactive. Examples of fully automated tools include the total body segmenter, the spleen segmenter, and the vertebrae segmenter. Deepgrow is an interactive tool that will automatically select tissues of interest after the user adds one or more clicks to the area. Deepedit is a model that both automatically identifies tissues and can be refined with the addition of clicks by the user like deepgrow. Deepedit comes pretrained to segment select organs; however an untrained model can be used an refined to meet a user’s needs.
