@@ -68,11 +68,12 @@ Before you can connect to the MONAI Label server using your client (3D Slicer or
 ## 5. Re-depolying a Runpod
 After you create the MONAI Label server on a RunPod, it will persist. Next time you need to use the server all you need to do is run the script deepgrow.sh using the bash command as described previously. RunPod will charge an hourly rate for GPU usage as well as a daily flat rate for storage, so be mindful of keeping many inactive RunPods on the account.
 # Labeling Strategies
-There are 2 strategies for labeling data. Slicer has a library of labeling tools built in that use simple algorithms for efficient labeling. The MONAI Label plugin adds capabilities for several deep learning tools that can be fine tuned to improve labeling efficiency. 
-## Labeling in Slicer
-The Slicer segmentation toolbar has a number of built in segmentation methods but 2 that are especially useful are threshold and smoothing. The thresholding tool will select tissues within a specified hounsfield unit window. Especially useful is the threshold masking feature where the user can create a sphere shaped paintbrush where only tissues selected by the threshold tool will be marked. This tool is useful for correcting an automated segmentation that missed part of the object of interest. 
-<images>
-After using the thresholding tool, the output can have an irregular border so the smoothing tool can help create a cleaner output. 
-<images>
+There are 2 strategies for labeling data. Slicer has a library of labeling tools built in that use simple algorithms for efficient labeling. The MONAI Label plugin adds capabilities for several deep learning tools that can be fine tuned to improve labeling efficiency. A good workflow is to create a preliminary label using the MONAI Label tools, then to use Slicer to refine the label. Finally, after submitting the labels to the MONAI Label server, the initial MONAI Label model can be fine tuned to improve future performance.
 ## Labeling with MONAI LAbel
 The MONAI Label platform allows for the use of several powerful deep learning tools. These tools are either fully automated or interactive. Examples of fully automated tools include the total body segmenter, the spleen segmenter, and the vertebrae segmenter. Deepgrow is an interactive tool that will automatically select tissues of interest after the user adds one or more clicks to the area. Deepedit is a model that both automatically identifies tissues and can be refined with the addition of clicks by the user like deepgrow. Deepedit comes pretrained to segment select organs; however an untrained model can be used an refined to meet a user’s needs.
+
+## Labeling in Slicer
+The Slicer segmentation toolbar has a number of built in segmentation methods but 2 that are especially useful are threshold and smoothing. The thresholding tool will select tissues within a specified hounsfield unit window. Especially useful is the threshold masking feature where the user can create a sphere shaped paintbrush where only tissues selected by the threshold tool will be marked. This tool is useful for correcting an automated segmentation that missed part of the object of interest. 
+Images here!
+After using the thresholding tool, the output can have an irregular border so the smoothing tool can help create a cleaner output.
+Images here!
