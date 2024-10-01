@@ -71,9 +71,12 @@ After you create the MONAI Label server on a RunPod, it will persist. Next time 
 There are 2 strategies for labeling data. Slicer has a library of labeling tools built in that use simple algorithms for efficient labeling. The MONAI Label plugin adds capabilities for several deep learning tools that can be fine tuned to improve labeling efficiency. A good workflow is to create a preliminary label using the MONAI Label tools, then to use Slicer to refine the label. Finally, after submitting the labels to the MONAI Label server, the initial MONAI Label model can be fine tuned to improve future performance.
 ## Labeling with MONAI LAbel
 The MONAI Label platform allows for the use of several powerful deep learning tools. These tools are either fully automated or interactive. Examples of fully automated tools include the total body segmenter, the spleen segmenter, and the vertebrae segmenter. Deepgrow is an interactive tool that will automatically select tissues of interest after the user adds one or more clicks to the area. Deepedit is a model that both automatically identifies tissues and can be refined with the addition of clicks by the user like deepgrow. Deepedit comes pretrained to segment select organs; however an untrained model can be used an refined to meet a user’s needs.
-
-## Labeling in Slicer
-The Slicer segmentation toolbar has a number of built in segmentation methods but 2 that are especially useful are threshold and smoothing. The thresholding tool will select tissues within a specified hounsfield unit window. Especially useful is the threshold masking feature where the user can create a sphere shaped paintbrush where only tissues selected by the threshold tool will be marked. This tool is useful for correcting an automated segmentation that missed part of the object of interest. 
-Images here!
-After using the thresholding tool, the output can have an irregular border so the smoothing tool can help create a cleaner output.
-Images here!
+To use these tools in Slicer, they must be specified in the command used to start the MONAI Label server. Earlier, we created a script that imports the model deepgrow using the following code.
+```
+echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d" > deepgrow.sh
+```
+This code create a script containing the following
+```
+monailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d
+```
+The format of the start server command includes **monailabel start_server** followed by **--app --studies --conf**. These are values that specify the MONAI Label application used, the location of the studies that will be annotated, and the configuration options for the server. 
