@@ -75,8 +75,21 @@ To use these tools in Slicer, they must be specified in the command used to star
 ```
 echo -e "source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d" > deepgrow.sh
 ```
-This code create a script containing the following
+This code creates a script containing the following text
 ```
 monailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models deepgrow_2d,deepgrow_3d
 ```
-The format of the start server command includes **monailabel start_server** followed by **--app --studies --conf**. These are values that specify the MONAI Label application used, the location of the studies that will be annotated, and the configuration options for the server. 
+Notice that after the start_server command there are multiple configuration variables including **--app**, **--studies**, and **--conf models**. These values can be modified to change how the server functions. **--app** defines what MONAI Label application will be used. This tutorial uses the radiology application, but MONAI Label has additional models available in the pathology and MONAI Bundle applications. **--studies** defines the location of the imaging data. The included url points to a DICOM server but you can also point to a directory on RunPod local to the MONAI Label server. **--conf** lets you specify what models to upload or specific model parameters. The following tables list the key parameters used when starting the server and their arguments as well as the models available for use in the radiology application. [This](https://github.com/Project-MONAI/MONAILabel/tree/main/sample-apps/radiology) is a good resource for viewing the available settings for each model.
+| Config | Value | Description |
+|--------|-------|-------------|
+| --app | path/to/radiology | location of radiology app directory on server |
+| --studies | path/to/studies | location of studies on server or url for DICOM server |
+| --conf models | model_name1,model_name2 | imports listed models separated by commas |
+
+| Models | Description |
+|-------|-------------|
+| deepedit | imports DeepEdit interactive/automated model |
+| deepgrow_2d,deepgrow_3d | imports DeepGrow interacive segmentation model |
+| segmentation | imports segmentatino automated model |
+| segmentation_spleen | imports model for spleen segmentation |
+| localization_spine,localization_vertebra,segmentation_vertebra | imports vertebral segmentation model |
