@@ -66,6 +66,6 @@ Before you can connect to the MONAI Label server using your client (3D Slicer or
 3. Navigate to the MONAI Label plugin and paste the API url from step 4 into the box titled **MONAI Label Server**. Click the refresh button. This should load the model specified by your start_server command.
 4. To load a study from the DICOM server, hit the **Next Sample** button. Alternatively, you can load samples to your MONAI Label server directly through the DICOM module in 3D Slicer.
 ## 5. Re-depolying a Runpod
-After you create the MONAI Label server on a RunPod, it will persist. Next time you need to use the server all you need to do is run the script start_server.sh using the bash command as described previously. RunPod will charge an hourly rate for GPU usage as well as a daily flat rate for storage, so be mindful of keeping many inactive RunPods on the account.
+After you create the MONAI Label server on a RunPod, it will persist. Next time you need to use the server all you need to do is run the script deepgrow.sh using the bash command as described previously. RunPod will charge an hourly rate for GPU usage as well as a daily flat rate for storage, so be mindful of keeping many inactive RunPods on the account.
 # Labeling Strategies
 Now
