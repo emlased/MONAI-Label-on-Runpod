@@ -3,8 +3,8 @@ This document will discuss a workflow for using MONAI Label with 3D Slicer to an
 ## Table of Contents
 1. Setting Up MONAI Label on RunPod
 2. Labeling Strategies
-3. MONAI Review
-4. Lung Nodule Example
+3. Lung Nodule Example
+4. MONAI Review
 5. Troubleshooting
 6. Useful Resources
 # Setting Up MONAI Label on RunPod
@@ -89,7 +89,17 @@ Notice that after the start_server command there are multiple configuration vari
 | Models | Description |
 |-------|-------------|
 | deepedit | imports DeepEdit interactive/automated model |
-| deepgrow_2d,deepgrow_3d | imports DeepGrow interacive segmentation model |
-| segmentation | imports segmentatino automated model |
+| deepgrow_2d,deepgrow_3d | imports DeepGrow interactive segmentation model |
+| segmentation | imports segmentation automated model |
 | segmentation_spleen | imports model for spleen segmentation |
 | localization_spine,localization_vertebra,segmentation_vertebra | imports vertebral segmentation model |
+
+Of these models, the segmentation model is very useful for broad segmentation tasks. The DeepGrow model is useful for specific or difficult segmentation tasks since you can provide input to show the model what to segment. Initially, the output from these models can be imperfect, so correcting the labels with slicer is necessary. After completing several labels, the model can be fine tuned with new data. This will be discussed in the lung nodule example later.
+
+
+## Labeling in Slicer
+The Slicer segmentation toolbar has a number of built in segmentation methods but 2 that are especially useful are threshold and smoothing. The thresholding tool will select tissues within a specified hounsfield unit window. The threshold masking feature allows the user to create a sphere shaped paintbrush where only tissues selected by the threshold tool will be marked. This tool is useful for correcting an automated segmentation that missed part of the object of interest. 
+Images here!
+After using the thresholding tool, the output can have an irregular border so the smoothing tool can help create a cleaner output.
+Images here!
+# Lung Nodule Example
