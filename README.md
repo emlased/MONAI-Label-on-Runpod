@@ -73,7 +73,7 @@ MONAI Label is a software tool that uses machine learning to automate the image 
 
     ```
     # Define the new labels
-    NEW_LABELS='self.labels = [\n"nodule1" = 1,\n"nodule2" = 1,\n"nodule3" = 1\n]'
+    NEW_LABELS='        self.labels = [\n            "nodule1",\n            "nodule2",\n            "nodule3"\n        ]'
 
     # Update the first config file
     CONFIG_FILE="/workspace/venv/radiology/lib/configs/deepgrow_3d.py"
