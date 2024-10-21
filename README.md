@@ -11,13 +11,15 @@
 - [Labeling Strategies](#labeling-strategies)
   - [Manual Labelling in 3D Slicer](#manual-labelling-in-3d-slicer)
   - [Labelling with MONAI Label](#labelling-with-monai-label)
-- [MONAI Review](#monai-review)
+- [Quality Control with MONAI Review](#quality-control-with-monai-review)
   - [For Labelers](#for-labelers)
   - [For Reviewers](#for-reviewers)
+- [Examples](#examples)
+  - [Lung Nodule Segmentation](#lung-nodule-segmentation)
 - [Appendix](#appendix)
   - [MONAI Label Server Configuration Options](#monai-label-server-configuration-options)
-- [Troubleshooting](#troubleshooting)
-- [Other Resources](#other-resources)
+  - [Troubleshooting](#troubleshooting)
+  - [Other Resources](#other-resources)
 
 ## Setting Up MONAI Label on RunPod
 
@@ -125,13 +127,17 @@ MONAI Label is a software tool that uses machine learning to automate the image 
 
 - **Active Learning**: In cases where a large dataset needs to be labelled and MONAI Label is not able to generate accurate labels with pretrained models, the Active Learning feature can be used to fine-tune built-in MONAI Label models. It is recommended that you train the model after submitting a batch of 10 or more high quality labels. With each batch there should be a significant improvement in the DICE score reported in the RunPod MONAI Label server log. Model run statistics can be found at /workspace/venv/radiology/model. Depending on how accurate the initial model is, it may be more productive to complete several batches of initial segmentations by hand rather than making corrections with Slicer tools. Training parameters like the number of epochs and the training/vallidation data split can be changed in the Options tab.
 
-## MONAI Review
+## Quality Control with MONAI Review
 
 ### For Labelers
 - [Link to MONAI Label Reviewer Documentation](https://github.com/Project-MONAI/MONAILabel)
 
 ### For Reviewers
 - [Link to MONAI Label Reviewer Documentation](https://github.com/Project-MONAI/MONAILabel)
+
+## Examples
+
+### Lung Nodule Segmentation
 
 ## Appendix
 
