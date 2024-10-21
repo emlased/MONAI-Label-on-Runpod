@@ -14,9 +14,9 @@
 - [MONAI Review](#monai-review)
   - [For Labelers](#for-labelers)
   - [For Reviewers](#for-reviewers)
+- [Appendix](#appendix)
+  - [MONAI Label Server Configuration Options](#monai-label-server-configuration-options)
 - [Troubleshooting](#troubleshooting)
-  - [The MONAI Label server times out](#the-monai-label-server-times-out)
-  - [MONAI Label plugin glitches](#monai-label-plugin-glitches)
 - [Other Resources](#other-resources)
 
 ## Setting Up MONAI Label on RunPod
