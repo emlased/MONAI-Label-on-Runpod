@@ -24,7 +24,11 @@
 ## Setting Up MONAI Label on RunPod
 
 ### Background
-MONAI Label is a software tool that uses machine learning to automate the image segmentation process. It is run on a server, and the user interacts with the server using a client. 3D Slicer is a client that is run on the user's local machine and allows for visualization and segmentation of imaging data. RunPod is a service that allows you to build a temporary server called a pod with a high-end GPU for performing machine learning computations. Orthanc is software that is used to create a DICOM server that stores data for imaging studies. MONAI Label will communicate with an Orthanc DICOM server to pull studies and push segmentation files. This tutorial describes how to build a MONAI Label server on a RunPod.
+- MONAI Label is a software tool that uses machine learning to automate the image segmentation process. It is run on a server, and the user interacts with the server using a client.
+- 3D Slicer is a client that is run on the user's local machine and allows for visualization and segmentation of imaging data.
+- RunPod is a service that allows you to build a temporary server called a pod with a high end gpu for performing machine learning computations.
+- Orthanc is software that is used to create a dicom server that stores data for imaging studies.
+- MONAI Label will communicate with an Orthanc dicom server to pull studies and push segmentation files. This tutorial describes how to build a MONAI Label server on a RunPod.
 
 ### Deploying a RunPod
 1. **Create a RunPod account**: Sign up and log in to RunPod. You will need to request access to the UT Academic AI Team account and will receive a URL to link this to your account.
