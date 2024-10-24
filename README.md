@@ -136,6 +136,7 @@
 ### Lung Nodule Segmentation
 
 This example uses a DeepGrow model that was trained on 30 annotated studies. First a study was loaded using the Next Sample button. Then under the SmartEdit/Deepgrow tab, the model was changed to deepgrow_pipeline. The deepgrow pipeline is a combination of the DeepGrow 2D and 3D models. Since the pipeline relies on both models, both models were separately trained. When the study was loaded, a foreground point was added to the approximate center of the nodule. 
+![DeepGrow 1](images/DeepGrow_1.png)
 
 Here is the initial output of the DeepGrow model. Notice how the model had difficulty annotating the superior aspect of the nodule. A strength of DeepGrow is that model predictions can be improved with the addition of more foreground or background points. Here a point was added to the superior part of the nodule. 
 
