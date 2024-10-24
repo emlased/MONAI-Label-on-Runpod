@@ -131,6 +131,18 @@
 
 - **Active Learning**: In cases where a large dataset needs to be labelled and MONAI Label is not able to generate accurate labels with pretrained models, the Active Learning feature can be used to fine-tune built-in MONAI Label models. It is recommended that you train the model after submitting a batch of 10 or more high quality labels. With each batch there should be a significant improvement in the DICE score reported in the RunPod MONAI Label server log. Model run statistics can be found at /workspace/venv/radiology/model. Depending on how accurate the initial model is, it may be more productive to complete several batches of initial segmentations by hand rather than making corrections with Slicer tools. Training parameters like the number of epochs and the training/vallidation data split can be changed in the Options tab.
 
+## Examples
+
+### Lung Nodule Segmentation
+
+This example uses a DeepGrow model that was trained on 30 annotated studies. First a study was loaded using the Next Sample button. Then under the SmartEdit/Deepgrow tab, the model was changed to deepgrow_pipeline. The deepgrow pipeline is a combination of the DeepGrow 2D and 3D models. Since the pipeline relies on both models, both models were separately trained. When the study was loaded, a foreground point was added to the approximate center of the nodule. 
+
+Here is the initial output of the DeepGrow model. Notice how the model had difficulty annotating the superior aspect of the nodule. A strength of DeepGrow is that model predictions can be improved with the addition of more foreground or background points. Here a point was added to the superior part of the nodule. 
+
+As you can see, the model has done a better job including parts of the nodule that were previously missed. However, it is also adding unwanted segmentation to the vasculature. A good tool that can be used in the 3D viewer is the scissors tool. This will let you draw a shape that is extruded through the 3D space. You can select options like Erase Inside or Erase Outside. Here the scissors were used with Erase Inside to cut out bits of nodule expanding into vasculature.
+
+Finally, afer applying a smoothing filter, this is the output. It includes only the main lung nodule and using this method took approximately 1 to 2 minutes to segment. 
+
 ## Quality Control with MONAI Review
 
 ### For Labelers
@@ -138,10 +150,6 @@
 
 ### For Reviewers
 - [Link to MONAI Label Reviewer Documentation](https://github.com/Project-MONAI/MONAILabel)
-
-## Examples
-
-### Lung Nodule Segmentation
 
 ## Appendix
 
