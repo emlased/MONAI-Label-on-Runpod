@@ -153,10 +153,12 @@ Since this output is acceptable, it can be submitted to the server using the Sub
 ## Quality Control with MONAI Review
 
 ### For Labelers
-- [Link to MONAI Label Reviewer Documentation](https://github.com/Project-MONAI/MONAILabel)
+After labelling a set of studies, navigate to the MONAI Review plugin. It should autopopulate the MONAI Label server URL from the main plugin, then hit Connect. For each annotation, the labeler will mark the study as Easy, Medium, or Hard difficulty. These ratings will be used to help guide the reviewers. After rating the study, hit Next to load another.
+[Reviewer 1]
 
 ### For Reviewers
-- [Link to MONAI Label Reviewer Documentation](https://github.com/Project-MONAI/MONAILabel)
+Under the Reviewer's mode tab, you first need to submit a reviewer name. After you enter a name, a study will be populated. This 
+[Reviewer 2]
 
 ## Appendix
 
@@ -197,10 +199,13 @@ After doing the work to fine tune a model, you may want to download the model fo
   ```
 
 Since this file is large, runpodctl will probably attempt to make a zipped version first. Make sure you have a little extra disk space for the zipped file. The output will look something like this. 
-  `Sending 'model.zip' (9.8 GB)`/n
-  `Code is: 3528-baron-ritual-lecture-8`/n
-  `On the other computer run`/n/n
-  `runpodctl receive 3528-baron-ritual-lecture-8`
+  ```
+  Sending 'model.zip' (9.8 GB)
+  Code is: 3528-baron-ritual-lecture-8
+  On the other computer run
+  
+  runpodctl receive 3528-baron-ritual-lecture-8
+  ```
 
 On the new RunPod server or your home machine, simply navigate to the correct directory and run the receive code as directed. When the server is run, it should import the new imported model if that model is included in the start_server command. 
   ```
