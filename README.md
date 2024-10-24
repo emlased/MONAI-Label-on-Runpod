@@ -18,6 +18,7 @@
   - [Lung Nodule Segmentation](#lung-nodule-segmentation)
 - [Appendix](#appendix)
   - [MONAI Label Server Configuration Options](#monai-label-server-configuration-options)
+  - [Saving MONAI Label Models](#saving-monai-label-models)
   - [Troubleshooting](#troubleshooting)
   - [Other Resources](#other-resources)
 
@@ -187,7 +188,28 @@ Notice that after the start_server command there are multiple configuration vari
 | segmentation_spleen                                           | imports model for spleen segmentation          |
 | localization_spine, localization_vertebra, segmentation_vertebra | imports vertebral segmentation model           |
 
+### Saving MONAI Label Models
 
+After doing the work to fine tune a model, you may want to download the model for future use or send the model to another RunPod. To do this, you simply need to copy the directory located at /worksapce/venv/radiology/model from the RunPod that has been fine tuned to the new RunPod server. A useful command is runpodctl. By running the following code, you can easily transfer files to your home computer or to another runpod. 
+  ```
+  cd /workspace/venv/radiology
+  runpodctl send model
+  ```
+
+Since this file is large, runpodctl will probably attempt to make a zipped version first. Make sure you have a little extra disk space for the zipped file. The output will look something like this. 
+  `
+  Sending 'model.zip' (9.8 GB)
+  Code is: 3528-baron-ritual-lecture-8
+  On the other computer run
+
+  runpodctl receive 3528-baron-ritual-lecture-8
+  `
+
+On the new RunPod server or your home machine, simply navigate to the correct directory and run the receive code as directed. When the server is run, it should import the new imported model if that model is included in the start_server command. 
+  ```
+  cd /workspace/venv/radiology
+  runpodctl receive 3528-baron-ritual-lecture-8
+  ```
 
 ### Troubleshooting
 - **The MONAI Label server times out**: Press the refresh button to reconnect. If a study is loaded, continue segmentation after refreshing.
