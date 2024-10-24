@@ -139,10 +139,13 @@ This example uses a DeepGrow model that was trained on 30 annotated studies. Fir
 ![DeepGrow 1](images/DeepGrow_1.png)
 
 Here is the initial output of the DeepGrow model. Notice how the model had difficulty annotating the superior aspect of the nodule. A strength of DeepGrow is that model predictions can be improved with the addition of more foreground or background points. Here a point was added to the superior part of the nodule. 
+![DeepGrow 2](images/DeepGrow_2.png)
 
 As you can see, the model has done a better job including parts of the nodule that were previously missed. However, it is also adding unwanted segmentation to the vasculature. A good tool that can be used in the 3D viewer is the scissors tool. This will let you draw a shape that is extruded through the 3D space. You can select options like Erase Inside or Erase Outside. Here the scissors were used with Erase Inside to cut out bits of nodule expanding into vasculature.
+![DeepGrow 3](images/DeepGrow_3.png)
 
 Finally, afer applying a smoothing filter, this is the output. It includes only the main lung nodule and using this method took approximately 1 to 2 minutes to segment. 
+![DeepGrow 4](images/DeepGrow_4.png)
 
 ## Quality Control with MONAI Review
 
