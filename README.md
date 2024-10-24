@@ -197,10 +197,9 @@ After doing the work to fine tune a model, you may want to download the model fo
   ```
 
 Since this file is large, runpodctl will probably attempt to make a zipped version first. Make sure you have a little extra disk space for the zipped file. The output will look something like this. 
-  `Sending 'model.zip' (9.8 GB)`
-  `Code is: 3528-baron-ritual-lecture-8`
-  `On the other computer run`
-
+  `Sending 'model.zip' (9.8 GB)`/n
+  `Code is: 3528-baron-ritual-lecture-8`/n
+  `On the other computer run`/n/n
   `runpodctl receive 3528-baron-ritual-lecture-8`
 
 On the new RunPod server or your home machine, simply navigate to the correct directory and run the receive code as directed. When the server is run, it should import the new imported model if that model is included in the start_server command. 
