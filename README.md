@@ -147,6 +147,8 @@ As you can see, the model has done a better job including parts of the nodule th
 Finally, afer applying a smoothing filter, this is the output. It includes only the main lung nodule and using this method took approximately 1 to 2 minutes to segment. 
 ![DeepGrow 4](images/DeepGrow_4.png)
 
+Since this output is acceptable, it can be submitted to the server using the Submit Label button. After submitting 10 or so labels, the model can be fine tuned. First select DeepGrow 2D in the models section under the Active Learning tab. Then select the Train button. The MONAI Label server logs on RunPod will output the progress of training and the DICE score after each training epoch. Then do the same with the DeepGrow 3D model.
+
 ## Quality Control with MONAI Review
 
 ### For Labelers
