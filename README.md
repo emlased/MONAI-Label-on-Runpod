@@ -1,61 +1,41 @@
 # Image Segmentation with MONAI Label and 3D Slicer
 
 ## Table of Contents
-- [Setting Up MONAI Label on RunPod](#setting-up-monai-label-on-runpod)
-  - [Background](#background)
-  - [Deploying a RunPod](#deploying-a-runpod)
-  - [Initializing MONAI Label Server](#initializing-monai-label-server)
-  - [Accessing the MONAI Label API](#accessing-the-monai-label-api)
-  - [Installing MONAI Label Plugin for 3D Slicer](#installing-monai-label-plugin-for-3d-slicer)
-  - [Re-deploying a RunPod](#re-deploying-a-runpod)
-- [Labeling Strategies](#labeling-strategies)
-  - [Manual Labelling in 3D Slicer](#manual-labelling-in-3d-slicer)
-  - [Labelling with MONAI Label](#labelling-with-monai-label)
-- [Quality Control with MONAI Review](#quality-control-with-monai-review)
-  - [For Labelers](#for-labelers)
-  - [For Reviewers](#for-reviewers)
-- [Examples](#examples)
-  - [Lung Nodule Segmentation](#lung-nodule-segmentation)
-- [Appendix](#appendix)
-  - [MONAI Label Server Configuration Options](#monai-label-server-configuration-options)
-  - [Saving MONAI Label Models](#saving-monai-label-models)
-  - [Troubleshooting](#troubleshooting)
-  - [Other Resources](#other-resources)
 
-## Setting Up MONAI Label on RunPod
+## MONAI Label Installation
 
 ### Background
 - MONAI Label is a software tool that uses machine learning to automate the image segmentation process. It is run on a server, and the user interacts with the server using a client.
 - 3D Slicer is a client that is run on the user's local machine and allows for visualization and segmentation of imaging data.
-- RunPod is a service that allows you to build a temporary server called a pod with a high end gpu for performing machine learning computations.
-- Orthanc is software that is used to create a dicom server that stores data for imaging studies.
-- MONAI Label will communicate with an Orthanc dicom server to pull studies and push segmentation files. This tutorial describes how to build a MONAI Label server on a RunPod.
+- RunPod is a service that allows you to build a temporary server with a high end GPU for performing machine learning computations. A server or “pod” can be attached to a network volume so that stored data persists after the pod is terminated. 
 
-### Deploying a RunPod
+### Deploying a Network Volume
+When starting a new project, the first step will be to deploy a network volume for the project. After installing MONAI Label on the network volume and uploading imaging data, the project will be accessible whenever a pod is deployed. 
+
 1. **Create a RunPod account**: Sign up and log in to RunPod. You will need to request access to the UT Academic AI Team account and will receive a URL to link this to your account.
 
-2. **Configure the Pod**: 
+2. **Deploy the Network Volume**: 
    - Click Pods in the toolbar and then + Deploy. 
-   - Select the cloud type Secure Cloud and change to Community Cloud. 
-   - Select the location Any and change to US - United States. 
-   - Change the internet speed from Med to High or Extreme. 
-   - Check the box for Public IP. 
-   - Select a GPU with at least 12GB VRAM, such as the RTX 4090. 
-   - Remember to stop the machine when not in use to avoid hourly charges.
+   - Select the cloud type Secure Cloud. 
+   - Select Network Volume and click + Network Volume. 
+   - Select a location in the US with a high availability of RTX 4090s. 
+   - Name the Volume and increase Volume size based on need.
 
-3. **Edit Template**:
-   - Set an appropriate size for the temporary Container Disk and the persistent Volume Disk. 
-   - Expose port 8000 under Expose TCP Ports. 
+4. **Deploy the Pod**:
+   - Select the Network Volume created in the previous step.
+   - Select an appropriate GPU like the RTX 4090.
+   - For Instance Pricing, use On-Demand Non-Interruptable.
+   - Select Edit Template and expose port 8000 under Expose TCP Ports.
+   - Click Deploy On-Demand to start the pod.
+   - Note that after creating a pod, RunPod will continue to charge credits until the pod is terminated. Remember to terminate pods when not in use. Another pod can be quickly created and data will persist on the Network Volume.
 
-4. **Deploy the Pod**: Click Deploy On-Demand to start the pod.
-
-5. **Connect to the Pod**: 
+6. **Connect to the Pod**: 
    - Click the down arrow to expand your RunPod. 
    - Click the Connect button, then Start Web Terminal, and Connect to Web Terminal. 
    - Alternatively, use the SSH link provided by RunPod to access through a terminal on your local computer.
 
-### Initializing MONAI Label Server
-1. **Set Up Environment**: Run the following in the RunPod terminal to create a virtual environment and install MONAI Label. This will also create a script deepgrow.sh that can be used to start a MONAI Label server with the DeepGrow model loaded that will pull studies from a dicom server. A more complete description of the start_server command as well as different options available for configuring a MONAI Label server are included in the Appendix.
+### Installing MONAI Label
+1. **Set Up Environment**: Run the following in the RunPod terminal to create a virtual environment and install MONAI Label. This will also create a script deepgrow.sh that can be used to start a MONAI Label server with the DeepGrow model loaded.
 
     ```bash
     # Create and activate python virtual environment in permanent workspace directory
@@ -67,18 +47,18 @@
     cd /workspace/venv &&
     pip install monailabel &&
     monailabel apps --name radiology --download --output . &&
-    monailabel apps --name monaibundle --download --output . &&
+    mkdir /workspace/venv/dataset &&
 
     # Create script deepgrow.sh
     cd /workspace &&
-    echo -e 'source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies http://20.55.49.33/dicom-web --conf models "deepgrow_2d,deepgrow_3d"' > deepgrow.sh
+    echo -e 'source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies /workspace/venv/dataset --conf models "deepgrow_2d,deepgrow_3d"' > deepgrow.sh
     ```
 
-2. **Edit the Default Labels**: Use the following command to change the default labels to nodule1, nodule2, nodule3. Note that each label is given a value of 1 because they are all the same class (nodules). You can specifiy different classes by assigning them any set of integer values.
+2. **Edit the Default Labels**: Use the following command to change the default labels to nodule_1, nodule_2, nodule_3. 
 
     ```
     # Define the new labels
-    NEW_LABELS='        self.labels = [\n            "nodule1",\n            "nodule2",\n            "nodule3"\n        ]'
+    NEW_LABELS='        self.labels = [\n            "nodule_1",\n            "nodule_2",\n            "nodule_3"\n        ]'
 
     # Update the first config file
     CONFIG_FILE="/workspace/venv/radiology/lib/configs/deepgrow_3d.py"
