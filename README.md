@@ -86,6 +86,12 @@ In the start server script after the --studies modifier, the web address of a DI
 `
 Studies can be uploaded to a DICOM server (such as an Orthanc server) in DICOM format. When MONAI Label creates segmentation files, they will be uploaded to the DICOM server as DICOM segmentation files. 
 
+### Converting DICOM to NIFTI
+If you have a DICOM data set and you want to store data locally, you will need to convert to NIFTI files. This is easy to do with the [dcm2niix tool](https://github.com/rordenlab/dcm2niix). After downloading the tool, just use the dcm2niix followed by the directory you wish to convert from DICOM to NIFTI.
+```
+dcm2niix dicom_directory
+```
+
 ### Data transfer
 Transferring data to and from RunPod requires the [runpodctl tool](https://github.com/runpod/runpodctl). After downloading this tool on your local machine, you can easily transfer files to and from a pod. If you are transferring a directory titled dataset, use the following code and the machine hosting the data:
 ```
