@@ -77,7 +77,7 @@ Notice the deepgrow.sh script points to the /workspace/venv/dataset directory fo
 `
 .nii.gz .nii .nrrd
 `
-Based on our DeepGrow script, data should be placed into the dataset directory as previously mentioned. If segmentation files are available, they should have the same file name as their corresponding image file and they should be placed into the directory /workspace/venv/dataset/images/final. Using locally stored data is advantageous because the lag in loading studies into slier is substantially lower and the MONAI Review platform does not work with studies stored on a DICOM server. 
+Based on our DeepGrow script, data should be placed into the dataset directory as previously mentioned. If segmentation files are available, they should have the same file name as their corresponding image file and they should be placed into the directory /workspace/venv/dataset/images/final. Using locally stored data is advantageous because the lag in loading studies into 3D Slicer is substantially lower and the MONAI Review platform does not work with studies stored on a DICOM server. 
 
 ### Remote Storage
 In the start server script after the --studies modifier, the web address of a DICOM server can be included instead of a local directory. The following is an example of how to link a DICOM server in the start server command.
@@ -85,6 +85,35 @@ In the start server script after the --studies modifier, the web address of a DI
 -- studies http://20.55.49.33/dicom-web
 `
 Studies can be uploaded to a DICOM server (such as an Orthanc server) in DICOM format. When MONAI Label creates segmentation files, they will be uploaded to the DICOM server as DICOM segmentation files. 
+
+### Data transfer
+Transferring data to and from RunPod requires the [runpodctl tool](https://github.com/runpod/runpodctl). After downloading this tool on your local machine, you can easily transfer files to and from a pod. If you are transferring a directory titled dataset, use the following code and the machine hosting the data:
+```
+runpodctl send dataset
+```
+The output will look something like this: 
+```
+Sending 'dataset' (5 GB)
+Code is: 8338-galileo-collect-fidel
+On the other computer run
+
+runpodctl receive 8338-galileo-collect-fidel
+```
+Simply navigate to the directory in which you want the data to be placed on the runpod and run the last line.
+```
+runpodctl receive 8338-galileo-collect-fidel
+```
+
+### Model Portability
+Now that you have installed MONAI LAbel and prepared you data locally or on a DICOM server, you are ready to start a server. You can start labelling with a generic pretrained model provided by MONAI Label like deepgrow or deepedit. In the case where you have either fine tuned or trained from scratch your own model, you can save that model and upload it to future pods using the runpodctl tool. MONAI Label stores models in the directory /workspace/venv/radiology/model. MONAI Label also includes performance metrics like a DICE score in this directory. 
+
+
+
+
+
+
+
+
 
 
 ### Accessing the MONAI Label API
