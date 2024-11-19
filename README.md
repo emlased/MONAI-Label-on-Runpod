@@ -35,7 +35,7 @@ When starting a new project, the first step will be to deploy a network volume f
    - Alternatively, use the SSH link provided by RunPod to access through a terminal on your local computer.
 
 ### Installing MONAI Label
-1. **Set Up Environment**: Run the following in the RunPod terminal to create a virtual environment and install MONAI Label. This will also create a script deepgrow.sh that can be used to start a MONAI Label server with the DeepGrow model loaded.
+1. **Set Up Environment**: Run the following in the RunPod terminal to create a virtual environment and install MONAI Label. This will also create a script deepgrow.sh that can be used to start a MONAI Label server with the DeepGrow model loaded. Information on how to load alternative models will be included in the appendix.
 
     ```bash
     # Create and activate python virtual environment in permanent workspace directory
@@ -54,7 +54,7 @@ When starting a new project, the first step will be to deploy a network volume f
     echo -e 'source /workspace/venv/bin/activate\nmonailabel start_server --app /workspace/venv/radiology --studies /workspace/venv/dataset --conf models "deepgrow_2d,deepgrow_3d"' > deepgrow.sh
     ```
 
-2. **Edit the Default Labels**: Use the following command to change the default labels to nodule_1, nodule_2, nodule_3. 
+2. **Edit the Default Labels**: Use the following command to change the default labels to nodule_1, nodule_2, nodule_3. DeepGrow uses a 2D and 3D model so two config files must be changed. 
 
     ```
     # Define the new labels
@@ -68,16 +68,24 @@ When starting a new project, the first step will be to deploy a network volume f
     CONFIG_FILE="/workspace/venv/radiology/lib/configs/deepgrow_2d.py"
     sed -i "/self.labels = \[/,/]/c\\$NEW_LABELS" "$CONFIG_FILE"
     ```
+## Data Preparation
 
-3. **Run the Server**: Use the following command to start the MONAI Label server. 
+At this point, you have MONAI Label installed on the Network Volume and a script prepared to start the server. There are two ways that your MONAI Label server can access imaging studies: via local storage or remote DICOM storage. Which method is best will depend on the current formatting of your imaging data and if you plan to use MONAI Review.
 
-    ```bash
-    bash /workspace/deepgrow.sh
-    ```
+### Local Storage
+Notice the deepgrow.sh script points to the /workspace/venv/dataset directory for imaging studies. This method requires that imaging studies are loaded onto the network volume. MONAI Label will only recognize locally stored data in the following formats: 
+`
+.nii.gz .nii .nrrd
+`
+Based on our DeepGrow script, data should be placed into the dataset directory as previously mentioned. If segmentation files are available, they should have the same file name as their corresponding image file and they should be placed into the directory /workspace/venv/dataset/images/final. Using locally stored data is advantageous because the lag in loading studies into slier is substantially lower and the MONAI Review platform does not work with studies stored on a DICOM server. 
 
-4. **Verify Server Status**: When the server is running, you should see the following text at the bottom of the terminal.
+### Remote Storage
+In the start server script after the --studies modifier, the web address of a DICOM server can be included instead of a local directory. The following is an example of how to link a DICOM server in the start server command.
+`
+-- studies http://20.55.49.33/dicom-web
+`
+Studies can be uploaded to a DICOM server (such as an Orthanc server) in DICOM format. When MONAI Label creates segmentation files, they will be uploaded to the DICOM server as DICOM segmentation files. 
 
-   `Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)`
 
 ### Accessing the MONAI Label API
 - **Find the API URL**: Click the RunPod Connect button and then TCP Port Mappings to get the URL. Use `http://` + `Public IP` + `:` + `External port`. For example, `http://69.145.85.93:30135`. Searching this in a browser while the server is running will bring up the API page. This is the url that will be input into 3D Slicer.
