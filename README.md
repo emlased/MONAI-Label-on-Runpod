@@ -113,14 +113,15 @@ runpodctl receive 8338-galileo-collect-fidel
 ### Model Portability
 Now that you have installed MONAI LAbel and prepared you data locally or on a DICOM server, you are ready to start a server. You can start labelling with a generic pretrained model provided by MONAI Label like deepgrow or deepedit. In the case where you have either fine tuned or trained from scratch your own model, you can save that model and upload it to future pods using the runpodctl tool. MONAI Label stores models in the directory /workspace/venv/radiology/model. MONAI Label also includes performance metrics like a DICE score in this directory. 
 
-
-
-
-
-
-
-
-
+## Starting the MONAI Label Server
+Starting the MONAI Label server simply requires running the bash command beginning with
+```
+monailabel start_server
+```
+There is more detail on the start_server command in the appendix. Earlier we wrote the script deepgrow.sh to contain the bash code to start the server. Run the following to execure the script.
+```
+bash /workspace/deepgrow.sh
+```
 
 ### Accessing the MONAI Label API
 - **Find the API URL**: Click the RunPod Connect button and then TCP Port Mappings to get the URL. Use `http://` + `Public IP` + `:` + `External port`. For example, `http://69.145.85.93:30135`. Searching this in a browser while the server is running will bring up the API page. This is the url that will be input into 3D Slicer.
@@ -139,7 +140,7 @@ Now that you have installed MONAI LAbel and prepared you data locally or on a DI
 6. **Load Studies**: Use the Next Sample button to load studies from the DICOM server or MONAI Label server.
 
 ### Re-deploying a RunPod
-- **Persisting the Server**: The MONAI Label server will persist on the RunPod Volume disk in the /workspace directory. To use it again, you can simply run the `deepgrow.sh` script or a custom start_server command to deploy a different model. Be mindful of RunPod's hourly GPU usage charges and daily storage fees. 
+Since everything we installed will remain on the volume network, if you done using MONAI Label, terminate the pod. When you need to use MONAI Label again, create a  new pod and connect the same network volume. Everything you have set up will be available.
 
 ## Labeling Strategies
 
@@ -212,29 +213,6 @@ Notice that after the start_server command there are multiple configuration vari
 | segmentation                                                  | imports segmentation automated model           |
 | segmentation_spleen                                           | imports model for spleen segmentation          |
 | localization_spine, localization_vertebra, segmentation_vertebra | imports vertebral segmentation model           |
-
-### Saving MONAI Label Models
-
-After doing the work to fine tune a model, you may want to download the model for future use or send the model to another RunPod. To do this, you simply need to copy the directory located at /worksapce/venv/radiology/model from the RunPod that has been fine tuned to the new RunPod server. A useful command is runpodctl. By running the following code, you can easily transfer files to your home computer or to another runpod. 
-  ```
-  cd /workspace/venv/radiology
-  runpodctl send model
-  ```
-
-Since this file is large, runpodctl will probably attempt to make a zipped version first. Make sure you have a little extra disk space for the zipped file. The output will look something like this. 
-  ```
-  Sending 'model.zip' (9.8 GB)
-  Code is: 3528-baron-ritual-lecture-8
-  On the other computer run
-  
-  runpodctl receive 3528-baron-ritual-lecture-8
-  ```
-
-On the new RunPod server or your home machine, simply navigate to the correct directory and run the receive code as directed. When the server is run, it should import the new imported model if that model is included in the start_server command. 
-  ```
-  cd /workspace/venv/radiology
-  runpodctl receive 3528-baron-ritual-lecture-8
-  ```
 
 ### Troubleshooting
 - **The MONAI Label server times out**: Press the refresh button to reconnect. If a study is loaded, continue segmentation after refreshing.
