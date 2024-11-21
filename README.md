@@ -81,9 +81,9 @@ Based on our DeepGrow script, data should be placed into the dataset directory a
 
 ### Remote Storage
 In the start server script after the --studies modifier, the web address of a DICOM server can be included instead of a local directory. The following is an example of how to link a DICOM server in the start server command.
-`
+```
 -- studies http://20.55.49.33/dicom-web
-`
+```
 Studies can be uploaded to a DICOM server (such as an Orthanc server) in DICOM format. When MONAI Label creates segmentation files, they will be uploaded to the DICOM server as DICOM segmentation files. 
 
 ### Converting DICOM to NIFTI
@@ -151,9 +151,9 @@ Now that you have installed MONAI LAbel and prepared you data locally or on a DI
 - **Smoothing**: The smooth tool is useful for closing small holes in the segmentation left be the threshold tool or smoothing out rough edges of at the perimeter of the segmentation. 
 
 ### Labelling with MONAI Label
-- **Automated and Semi-automated Segmentation**: MONAI Label works well out of the box for some specific labelling tasks including spleen segmentation, vertebra segmentation, and various organ segmentations found in the total body segmenter model. It also allows for semi-automated segmentation using tools like DeepGrow and DeepEdit which generate a segmentation using user clicks as well as the raw image. This is beneficial because it allows for more generalized models and segmentations can be improved upon with additional clicks. 
+- **Automated and Semi-automated Segmentation**: MONAI Label works well out of the box for some specific labelling tasks including spleen segmentation, vertebra segmentation, and various organ segmentations found in the total body segmenter model. When choosing a model for a new labeling task, two good options are DeepGrow and DeepEdit. Both can function as semiautomatic segmentation strategies that generate segmentation masks in response to clicks in the region of interest. DeepEdit has the additional advantage of performing fully autonomous segmentation. While both models come pretrained on medical imaging data, DeepEdit is specifically pretrained to label the spleen, kidneys, liver, stomach, aorta, and IVC. For a new labeling task, the pretrained DeepEdit expects these 7 labels and therefore must be trained from scratch. Training from scratch requires substantially more data than simply fine tuning. DeepGrow requires 10-20 annotated studies to produce excellent output while DeepEdit will require several times that.
 
-- **Active Learning**: In cases where a large dataset needs to be labelled and MONAI Label is not able to generate accurate labels with pretrained models, the Active Learning feature can be used to fine-tune built-in MONAI Label models. It is recommended that you train the model after submitting a batch of 10 or more high quality labels. With each batch there should be a significant improvement in the DICE score reported in the RunPod MONAI Label server log. Model run statistics can be found at /workspace/venv/radiology/model. Depending on how accurate the initial model is, it may be more productive to complete several batches of initial segmentations by hand rather than making corrections with Slicer tools. Training parameters like the number of epochs and the training/vallidation data split can be changed in the Options tab.
+- **Active Learning**: As noted earlier, DeepGrow and DeepEdit can both be fine tuned. DeepGrow is much faster to fine tune. It is recommended to train a model every 10 studies with DeepGrow or every 20-30 studies with DeepEdit. With each batch there should be a significant improvement in the DICE score reported in the RunPod MONAI Label server log. Model run statistics can be found at /workspace/venv/radiology/model. Depending on how accurate the initial model is, it may be more productive to complete several batches of initial segmentations by hand rather than making corrections with Slicer tools. Training parameters like the number of epochs and the training/vallidation data split can be changed in the Options tab.
 
 ## Examples
 
